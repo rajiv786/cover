@@ -1,0 +1,77 @@
+import React, { useState } from 'react';
+import SwipeableViews from 'react-swipeable-views';
+import { autoPlay } from 'react-swipeable-views-utils';
+import { virtualize, bindKeyboard } from 'react-swipeable-views-utils';
+import { Image } from 'mui-image';
+import {useMediaQuery} from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+// import 'react-swipeable-views/lib/styles.css';
+import { Grid, IconButton, Typography } from '@mui/material';
+import ArrowLeft from '@mui/icons-material/ArrowLeft';
+import ArrowRight from '@mui/icons-material/ArrowRight';
+
+const VirtualizeSwipeableViews = bindKeyboard(virtualize(SwipeableViews));
+const AutoPlaySwipeableViews = autoPlay(VirtualizeSwipeableViews);
+
+const ImageCarousel = () => {
+	const [activeSlide, setActiveSlide] = useState(0);
+	const mobile = useMediaQuery('(max-width:600px)');
+  const slides = [
+    'https://drive.google.com/uc?export=view&id=1Ntd2n3aQsGYKEx0tNQMHVUpjdcAISYiZ',
+    'https://drive.google.com/uc?export=view&id=1B6ggZjpxIcqQ4ioAFU2ZwrTdUfScRbRV',
+    'https://drive.google.com/uc?export=view&id=1BCGwNd53FMr6IrnF26H1_rSSWINB3Z1R',
+    'https://drive.google.com/uc?export=view&id=15OmNiKpMNUpUenNPBgC48J2gko96ypxR',
+    'https://drive.google.com/uc?export=view&id=17A5F4ikjcb8_bNOMi_kqhSTJAxbAYfaf',
+    'https://drive.google.com/uc?export=view&id=1AuMPaOGsDET-TS1mp-G4uKl5IbFGImHM',
+    'https://drive.google.com/uc?export=view&id=1PPrepkJwQ1QnGGq8z1KJNiBNQHcyF_AT',
+    'https://drive.google.com/uc?export=view&id=1CnD3N_7YOLVkRB5lq5hw449aCHuQXm0a',
+    // Add more image URLs as needed
+  ];
+
+  const handleNextSlide = () => {
+    setActiveSlide((prevSlide) => (prevSlide + 1) % slides.length);
+  };
+
+  const handlePrevSlide = () => {
+    setActiveSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
+  };
+
+
+  const totalSteps = 4; // Replace with the actual number of images in your carousel
+
+  return (
+	<Grid container justifyContent="center">
+	<Grid item xs={11} md={9} lg={11.5} sx={{background: '#D3D9E6',borderRadius:"20px"}}>
+			  <Grid container lg={12} alignItems="center">
+				  <Grid item lg={12}>
+					  <Typography>Our BookDesign</Typography>
+				  </Grid>
+				  
+            <Grid item lg={1}xs={1}>
+            {!mobile && activeSlide !== 0 && (  <IconButton onClick={handlePrevSlide}>
+                <ArrowLeft />
+              </IconButton>)}
+            </Grid>
+          
+		<Grid item xs={10} lg={10} container spacing={2}>
+		  {slides.slice(activeSlide, activeSlide + (mobile ? 1 : 4)).map((slide, index) => (
+			<Grid key={index} item xs={12} sm={6} md={3}>
+			  <img src={slide} alt={`Slide ${index + 1}`} style={{ width: '100%', height: 'auto' }} />
+			</Grid>
+		  ))}
+					  
+				  </Grid>
+				 
+		<Grid item lg={1} xs={1}>
+		  <IconButton onClick={handleNextSlide}>
+			<ArrowRight />
+		  </IconButton>
+		</Grid>
+	  </Grid>
+	</Grid>
+  </Grid>
+  );
+};
+
+export default ImageCarousel;
